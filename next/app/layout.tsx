@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@/globals.css";
-import { cn } from "@/lib/utils"
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import '@/globals.css';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Toaster } from '@/components/ui/toaster';
 import { LoginUserProvider } from '@/app/LoginUserProvider';
@@ -13,13 +13,13 @@ export const dynamic = 'force-dynamic';
 
 const fetcher = getFetcher();
 const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
-  title: "Next Sample",
-  description: "Next Sample for Business Application",
+  title: 'Next Sample',
+  description: 'Next Sample for Business Application',
 };
 
 const loginUserQuery = gql`
@@ -43,12 +43,7 @@ export default async function RootLayout({
   const user = res.loginUser;
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          inter.variable
-        )}
-      >
+      <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
         <LoginUserProvider user={user}>
           <Header />
           {children}
