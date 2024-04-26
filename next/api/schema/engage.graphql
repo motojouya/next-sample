@@ -1,0 +1,55 @@
+input SendEmailInput {
+  email: String!
+}
+
+union SendEmailReturn = User | AnonymousUser | RecordAlreadyExistError | MailSendError
+
+input VerifyEmailInput {
+  register_session_id: Int
+  email: String!
+  email_pin: Int!
+}
+
+union VerifyEmailReturn = Email | RecordNotFoundError
+
+input RegisterInput {
+  register_session_id: Int!
+  name: String!
+  email: String!
+  password: String!
+}
+
+union RegisterReturn = User | RecordNotFoundError
+
+input LoginInput {
+  id: ID!
+  password: String!
+}
+
+input UserInput {
+  name: String!
+}
+
+input EmailInput {
+  email: String!
+}
+
+union EmailChangeReturn = User | RecordNotFoundError
+
+input PasswordInput {
+  password: String!
+}
+
+type Mutation {
+  sendEmail(input: SendEmailInput!): SendEmailReturn
+  verifyEmail(input: VerifyEmailInput!): VerifyEmailReturn
+  register(input: RegisterInput!): RegisterReturn
+  login(input: LoginInput!): User
+  changeUserInformation(input: UserInput!): User
+  changeEmail(input: EmailInput!): EmailChangeReturn
+  changePassword(input: PasswordInput!): User
+}
+
+type Query {
+  loginUser: User
+}
