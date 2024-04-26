@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import '@/globals.css';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { gql } from 'graphql-request';
+
+import '@/app/globals.css';
+import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { LoginUserProvider } from '@/app/LoginUserProvider';
 import { Header } from '@/app/Header';
-import { gql } from 'graphql-request';
 import { getFetcher } from '@/lib/fetch';
 
 export const dynamic = 'force-dynamic';
@@ -14,7 +15,8 @@ export const dynamic = 'force-dynamic';
 const fetcher = getFetcher();
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
+  // variable: '--font-sans',
+  // <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
 });
 
 export const metadata: Metadata = {
@@ -39,11 +41,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const res = await fetcher(loginUserQuery, {});
-  const user = res.loginUser;
+  // const res = await fetcher(loginUserQuery, {});
+  // const user = res.loginUser;
+  const user = null;
   return (
     <html lang="en">
-      <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
+      <body className={inter.className}>
         <LoginUserProvider user={user}>
           <Header />
           {children}
