@@ -2,7 +2,11 @@
 
 comm=$1
 
-if [ $comm = "psql" ]; then
+if [ $comm = "build" ]; then
+  docker compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" --no-cache
+elif [ $comm = "up" ]; then
+  docker compose up -d
+elif [ $comm = "psql" ]; then
   docker compose exec rdb psql
 elif [ $comm = "redis" ]; then
   docker compose exec memory redis-cli
