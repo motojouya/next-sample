@@ -87,6 +87,7 @@ const login: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>[
   if (!user) {
     return new AuthenticationError(id, 'who are you!?');
   }
+  // TODO need session regenerate(destroy and getSession again)
   contextValue.session.loginUser = user;
 
   return user;
