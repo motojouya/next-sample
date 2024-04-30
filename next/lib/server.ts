@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 import { DataSource } from 'typeorm';
 
@@ -16,7 +16,9 @@ export interface RequestWithContext extends NextRequest {
   context?: NextContext;
 }
 
-export type BindContext = (func: ((req: NextRequest) => Promise<NextResponse>)) => (req: RequestWithContext) => Promise<NextResponse>;
+export type BindContext = (
+  func: (req: NextRequest) => Promise<NextResponse>,
+) => (req: RequestWithContext) => Promise<NextResponse>;
 export const bindContext: BindContext = func => async req => {
   const session = await getSession();
   const rdbSource = await getDataSource();

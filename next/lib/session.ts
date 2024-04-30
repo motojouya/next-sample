@@ -5,7 +5,7 @@ import { User } from '@/entity/user';
 
 export type SessionData = {
   loginUser: User;
-}
+};
 
 export type GetSession = () => ReturnType<typeof nextSession>;
 export const getSession: GetSession = () => {

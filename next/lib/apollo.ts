@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import assert from "node:assert";
+import assert from 'node:assert';
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
 import { loadSchemaSync } from '@graphql-tools/load';
@@ -62,7 +62,7 @@ export const getHandler: GetHandler = () => {
   return async request => {
     const json = await request.json();
     const res = await apollo.executeOperation({ query: json.query }, { req: request });
-    assert(res.body.kind === "single");
+    assert(res.body.kind === 'single');
     return NextResponse.json(res.body.singleResult);
   };
 };
@@ -79,4 +79,3 @@ export const getHandler: GetHandler = () => {
 //     contextValue: { userId: 'test' },
 //   }
 // );
-
