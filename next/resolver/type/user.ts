@@ -1,6 +1,6 @@
 import { UserResolvers, ResolversParentTypes } from '@/generated/graphql/server/resolver';
 import { getEmail } from '@/case/engage/user';
-import { ApolloContext } from '@/infra/apollo';
+import { ApolloContext } from '@/lib/apollo';
 import { User as UserEntity } from '@/entity/user';
 
 type IdentifierResolver = UserResolvers<ApolloContext, ResolversParentTypes['User'] & Partial<UserEntity>>['id'];

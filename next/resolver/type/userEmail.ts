@@ -1,5 +1,5 @@
 import { EmailResolvers, ResolversParentTypes } from '@/generated/graphql/server/resolver';
-import { ApolloContext } from '@/infra/apollo';
+import { ApolloContext } from '@/lib/apollo';
 import { UserEmail } from '@/entity/userEmail';
 
 type VerifiedResolver = EmailResolvers<ApolloContext, ResolversParentTypes['Email'] & Partial<UserEmail>>['verified'];

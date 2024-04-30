@@ -1,8 +1,8 @@
 import { EntityManager, DataSource, Raw } from 'typeorm';
 import { User, AnonymousUser } from '@/entity/user';
 import { UserEmail } from '@/entity/userEmail';
-import { transact, RecordAlreadyExistError } from '@/infra/rdb';
-import { Mailer, MailSendError } from '@/infra/mail';
+import { transact, RecordAlreadyExistError } from '@/lib/rdb';
+import { Mailer, MailSendError } from '@/lib/mail';
 import { addHours } from 'date-fns';
 
 // TODO randomは実質状態なので、モジュールを引数に渡したい

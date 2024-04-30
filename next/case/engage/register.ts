@@ -2,7 +2,7 @@ import { DataSource, Not, IsNull } from 'typeorm';
 import { User } from '@/entity/user';
 import { UserEmail } from '@/entity/userEmail';
 import { UserPassword } from '@/entity/userPassword';
-import { transact, RecordNotFoundError } from '@/infra/rdb';
+import { transact, RecordNotFoundError } from '@/lib/rdb';
 
 export type Register = (
   rdbSource: DataSource,

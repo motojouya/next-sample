@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLoginUser } from '@/app/LoginUserProvider';
@@ -34,9 +36,9 @@ const Links: React.FC<{}> = () => {
 
 export default function Page() {
   const router = useRouter();
+  const user = useLoginUser();
 
-  const loginUser = useLoginUser();
-  if (!loginUser) {
+  if (!user) {
     router.push('/');
     return null;
   } else {

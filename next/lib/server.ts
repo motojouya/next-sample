@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { DataSource } from 'typeorm';
 
-import { SessionData } from '@/lib/session';
+import { SessionType } from '@/lib/session';
 import { getDataSource } from '@/lib/rdb';
 import { Mailer, getMailer } from '@/lib/mail';
 
 export type NextContext = {
   rdbSource: DataSource;
   mailer: Mailer;
-  session: SessionData;
+  session: SessionType;
 };
 
 export interface RequestWithContext extends NextRequest {

@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { User } from '@/entity/user';
-import { transact } from '@/infra/rdb';
+import { transact } from '@/lib/rdb';
 
 export type ChangeUserInformation = (rdbSource: DataSource, loginUser: User, name: string) => Promise<User | null>;
 export const changeUserInformation: ChangeUserInformation = async (rdbSource, loginUser, name) => {

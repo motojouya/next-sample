@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { LoginUserProvider } from '@/app/LoginUserProvider';
 import { Header } from '@/app/Header';
-import { getSession } from 'src/infra/redisSession.js';
+import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +27,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = getSession();
+  const session = await getSession();
   const user = session.loginUser;
   return (
     <html lang="en">

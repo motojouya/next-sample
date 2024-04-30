@@ -7,9 +7,9 @@ import {
 } from '@/generated/graphql/server/resolver';
 import { User, isAnonymousUser } from '@/entity/user';
 import { UserEmail } from '@/entity/userEmail';
-import { RecordNotFoundError, RecordAlreadyExistError } from '@/infra/rdb';
-import { MailSendError } from '@/infra/mail';
-import { ApolloContext } from '@/infra/apollo';
+import { RecordNotFoundError, RecordAlreadyExistError } from '@/lib/rdb';
+import { MailSendError } from '@/lib/mail';
+import { ApolloContext } from '@/lib/apollo';
 
 export const SendEmailReturn: SendEmailReturnResolvers<ApolloContext, ResolversParentTypes['SendEmailReturn']> = {
   __resolveType(obj, contextValue, info) {
