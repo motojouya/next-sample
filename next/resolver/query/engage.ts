@@ -1,6 +1,6 @@
-import { getUserById } from 'src/case/engage/user.js';
-import { QueryResolvers, ResolversParentTypes } from 'src/generated/graphql/resolver.js';
-import { ApolloContext } from 'src/infra/apollo.js';
+import { getUserById } from '@/case/engage/user';
+import { QueryResolvers, ResolversParentTypes } from '@/generated/graphql/server/resolver';
+import { ApolloContext } from '@/infra/apollo';
 
 const loginUser: QueryResolvers<ApolloContext, ResolversParentTypes['Query']>['loginUser'] = async (
   parent,

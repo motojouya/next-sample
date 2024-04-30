@@ -4,12 +4,12 @@ import {
   RegisterReturnResolvers,
   EmailChangeReturnResolvers,
   ResolversParentTypes,
-} from 'src/generated/graphql/resolver.js';
-import { User, isAnonymousUser } from 'src/entity/user.js';
-import { UserEmail } from 'src/entity/userEmail.js';
-import { RecordNotFoundError, RecordAlreadyExistError } from 'src/infra/rdb.js';
-import { MailSendError } from 'src/infra/mail.js';
-import { ApolloContext } from 'src/infra/apollo.js';
+} from '@/generated/graphql/server/resolver';
+import { User, isAnonymousUser } from '@/entity/user';
+import { UserEmail } from '@/entity/userEmail';
+import { RecordNotFoundError, RecordAlreadyExistError } from '@/infra/rdb';
+import { MailSendError } from '@/infra/mail';
+import { ApolloContext } from '@/infra/apollo';
 
 export const SendEmailReturn: SendEmailReturnResolvers<ApolloContext, ResolversParentTypes['SendEmailReturn']> = {
   __resolveType(obj, contextValue, info) {

@@ -1,7 +1,7 @@
 import { DataSource, Not, IsNull } from 'typeorm';
-import { User } from 'src/entity/user.js';
-import { UserEmail } from 'src/entity/userEmail.js';
-import { transact, RecordNotFoundError } from 'src/infra/rdb.js';
+import { User } from '@/entity/user';
+import { UserEmail } from '@/entity/userEmail';
+import { transact, RecordNotFoundError } from '@/infra/rdb';
 
 export type ChangeEmail = (
   rdbSource: DataSource,

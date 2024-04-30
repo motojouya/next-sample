@@ -1,5 +1,5 @@
-import { QueryResolvers } from 'src/generated/graphql/resolver.js';
-import engage from 'src/resolver/query/engage.js';
+import { QueryResolvers } from '@/generated/graphql/server/resolver';
+import engage from '@/resolver/query/engage';
 
 export const queries: QueryResolvers = {
   ...engage,

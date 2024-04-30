@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { User } from 'src/entity/user.js';
-import { transact } from 'src/infra/rdb.js';
+import { User } from '@/entity/user';
+import { transact } from '@/infra/rdb';
 
 export type Login = (rdbSource: DataSource, email: string, password: string) => Promise<User | null>;
 export const login: Login = async (rdbSource, email, password) => {

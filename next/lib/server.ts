@@ -19,8 +19,8 @@ export interface RequestWithContext extends NextRequest {
 export type BindContext = (func: ((req: NextRequest) => Promise<NextResponse>)) => (req: RequestWithContext) => Promise<NextResponse>;
 export const bindContext: BindContext = func => async req => {
   const session = await getSession();
-  const rdbSource = await getDataSource(),
-  const mailer = getMailer(),
+  const rdbSource = await getDataSource();
+  const mailer = getMailer();
 
   request.context = {
     rdbSource,

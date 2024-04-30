@@ -1,8 +1,8 @@
 import { DataSource, Not, IsNull } from 'typeorm';
-import { User } from 'src/entity/user.js';
-import { UserEmail } from 'src/entity/userEmail.js';
-import { UserPassword } from 'src/entity/userPassword.js';
-import { transact, RecordNotFoundError } from 'src/infra/rdb.js';
+import { User } from '@/entity/user';
+import { UserEmail } from '@/entity/userEmail';
+import { UserPassword } from '@/entity/userPassword';
+import { transact, RecordNotFoundError } from '@/infra/rdb';
 
 export type Register = (
   rdbSource: DataSource,

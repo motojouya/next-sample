@@ -1,6 +1,6 @@
-import { User } from 'src/resolver/type/user.js';
-import { Email } from 'src/resolver/type/userEmail.js';
-import { EngageTypeResolvers } from 'src/resolver/type/engage.js';
+import { User } from '@/resolver/type/user';
+import { Email } from '@/resolver/type/userEmail';
+import { EngageTypeResolvers } from '@/resolver/type/engage';
 
 export const types = {
   User,

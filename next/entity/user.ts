@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, Relation } from 'typeorm';
-import { UserEmail } from 'src/entity/userEmail.js';
-import { UserPassword } from 'src/entity/userPassword.js';
+import { UserEmail } from '@/entity/userEmail';
+import { UserPassword } from '@/entity/userPassword';
 
 export type UserSpecification =
   | {

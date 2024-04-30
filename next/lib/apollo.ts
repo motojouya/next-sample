@@ -14,7 +14,7 @@ import { DataSource } from 'typeorm';
 import { resolvers } from '@/resolver';
 import type { SessionData } from '@/lib/session';
 import type { RequestWithContext } from '@/lib/server';
-import type { Mailer } from '@/mail';
+import type { Mailer } from '@/lib/mail';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -64,7 +64,7 @@ export const getHandler: GetHandler = () => {
     const res = await apollo.executeOperation({ query: json.query }, { req: request });
     assert(res.body.kind === "single");
     return NextResponse.json(res.body.singleResult);
-  });
+  };
 };
 
 // const result = await server.executeOperation(

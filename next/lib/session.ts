@@ -1,15 +1,9 @@
 import nextSession from 'next-session';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
-import { User } from 'src/entity/user.js';
+import { User } from '@/entity/user';
 
-// declare module 'next-session' {
-//   export interface SessionData {
-//     loginUser: User;
-//   }
-// }
-
-export type SessionData {
+export type SessionData = {
   loginUser: User;
 }
 
