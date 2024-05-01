@@ -14,10 +14,10 @@ services:
       - "./next:/srv"
     depends_on:
       - rdb
-      - memory
+      # - memory
     links:
       - "rdb:rdb"
-      - "memory:memory"
+      # - "memory:memory"
     # command: sh -c "npm run dev"
     environment:
       TZ: Asia/Tokyo
@@ -28,9 +28,10 @@ services:
       PG_DATABASE: bsample
       PG_USER: bsample
       PG_PASSWORD: bsample
-      REDIS_HOST: memory
-      REDIS_PORT: 6379
       SESSION_SECRET: secret
+      SESSION_COOKIE_NAME: session-id
+      # REDIS_HOST: memory
+      # REDIS_PORT: 6379
       MAIL_HOST: "mail"
       MAIL_PORT: 1025
       MAIL_FROM: motojouya@example.com
@@ -52,14 +53,14 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - rdb:/var/lib/postgresql/data
-  memory:
-    build:
-      context: "./container/memory"
-      args:
-        - UID
-        - GID
-        - USERNAME=bsample
-        - GROUPNAME=bsample
+#  memory:
+#    build:
+#      context: "./container/memory"
+#      args:
+#        - UID
+#        - GID
+#        - USERNAME=bsample
+#        - GROUPNAME=bsample
   mail:
     image: maildev/maildev
 #    container_name: maildev

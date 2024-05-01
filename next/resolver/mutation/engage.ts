@@ -2,6 +2,7 @@ import engage from '@/case/engage';
 import { MutationResolvers, ResolversParentTypes } from '@/generated/graphql/server/resolver';
 import { ApolloContext } from '@/lib/apollo';
 import { UserSpecification } from '@/entity/user';
+import { regenerate } from '@/lib/session';
 
 export class AuthenticationError extends Error {
   constructor(
@@ -23,9 +24,9 @@ const sendEmail: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation
   const {
     input: { email },
   } = args;
-  const loginUser = contextValue.session.loginUser || null;
+  const loginUserId = contextValue.session.getLoginUserId() || null;
 
-  return await engage.sendEmail(rdbSource, mailer, loginUser, email);
+  return await engage.sendEmail(rdbSource, mailer, loginUserId, email);
 };
 
 const verifyEmail: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>['verifyEmail'] = async (
@@ -38,13 +39,13 @@ const verifyEmail: MutationResolvers<ApolloContext, ResolversParentTypes['Mutati
   const {
     input: { register_session_id, email, email_pin },
   } = args;
-  const loginUser = contextValue.session.loginUser || null;
+  const loginUserId = contextValue.session.getLoginUserId() || null;
 
   let userSpecification: UserSpecification | null = null;
-  if (loginUser) {
+  if (loginUserId) {
     userSpecification = {
       type: 'logined',
-      loginUser,
+      loginUserId,
     };
   } else if (register_session_id) {
     userSpecification = {
@@ -87,8 +88,8 @@ const login: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>[
   if (!user) {
     return new AuthenticationError(id, 'who are you!?');
   }
-  // TODO need session regenerate(destroy and getSession again)
-  contextValue.session.loginUser = user;
+
+  await contextValue.session.regenerate(user.user_id);
 
   return user;
 };
@@ -101,11 +102,11 @@ const changeUserInformation: MutationResolvers<
   const {
     input: { name },
   } = args;
-  const loginUser = contextValue.session.loginUser;
-  if (!loginUser) {
+  const loginUserId = contextValue.session.getLoginUserId();
+  if (!loginUserId) {
     return new AuthenticationError(null, 'who are you!?');
   }
-  return await engage.changeUserInformation(rdbSource, loginUser, name);
+  return await engage.changeUserInformation(rdbSource, loginUserId, name);
 };
 
 const changePassword: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>['changePassword'] = async (
@@ -118,11 +119,11 @@ const changePassword: MutationResolvers<ApolloContext, ResolversParentTypes['Mut
   const {
     input: { password },
   } = args;
-  const loginUser = contextValue.session.loginUser;
-  if (!loginUser) {
+  const loginUserId = contextValue.session.getLoginUserId();
+  if (!loginUserId) {
     return new AuthenticationError(null, 'who are you!?');
   }
-  return await engage.changePassword(rdbSource, loginUser, password);
+  return await engage.changePassword(rdbSource, loginUserId, password);
 };
 
 const changeEmail: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>['changeEmail'] = async (
@@ -135,11 +136,11 @@ const changeEmail: MutationResolvers<ApolloContext, ResolversParentTypes['Mutati
   const {
     input: { email },
   } = args;
-  const loginUser = contextValue.session.loginUser;
-  if (!loginUser) {
+  const loginUserId = contextValue.session.getLoginUserId();
+  if (!loginUserId) {
     return new AuthenticationError(null, 'who are you!?');
   }
-  return await engage.changeEmail(rdbSource, loginUser, email);
+  return await engage.changeEmail(rdbSource, loginUserId, email);
 };
 
 export default {

@@ -5,7 +5,7 @@ import { UserPassword } from '@/entity/userPassword';
 export type UserSpecification =
   | {
       type: 'logined';
-      loginUser: User;
+      loginUserId: number;
     }
   | {
       type: 'anonymous';

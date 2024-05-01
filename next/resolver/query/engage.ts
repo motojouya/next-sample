@@ -8,11 +8,11 @@ const loginUser: QueryResolvers<ApolloContext, ResolversParentTypes['Query']>['l
   contextValue,
   info,
 ) => {
-  const loginUser = contextValue.session.loginUser;
-  if (!loginUser) {
+  const loginUserId = contextValue.session.getLoginUserId();
+  if (!loginUserId) {
     return null;
   }
-  return await getUserById(contextValue.rdbSource)(loginUser.user_id);
+  return await getUserById(contextValue.rdbSource)(loginUserId);
 };
 
 export default {

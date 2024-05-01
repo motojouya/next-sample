@@ -39,8 +39,12 @@ export async function transact<T>(source: DataSource, callback: (manager: Entity
   return result;
 }
 
+let ds: DataSource | null = null;
 export const getDataSource = async () => {
-  const ds = new DataSource({
+  if (ds) {
+    return ds;
+  }
+  ds = new DataSource({
     type: 'postgres',
     host: process.env.PG_HOST,
     port: parseInt(process.env.PG_PORT as string), // TODO 本当はnull checkしたほうがいい

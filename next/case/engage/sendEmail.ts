@@ -13,10 +13,10 @@ function getRandomInt(max: number) {
 export type SendEmail = (
   rdbSource: DataSource,
   mailer: Mailer,
-  loginUser: User | null,
+  loginUserId: number | null,
   email: string,
-) => Promise<User | AnonymousUser | RecordAlreadyExistError | MailSendError>;
-export const sendEmail: SendEmail = async (rdbSource, mailer, loginUser, email) => {
+) => Promise<User | AnonymousUser | RecordAlreadyExistError | RecordNotFoundError | MailSendError>;
+export const sendEmail: SendEmail = async (rdbSource, mailer, loginUserId, email) => {
   return await transact(rdbSource, async manager => {
     const duplicatedEmail = await getDuplicatedEmail(manager, email);
     if (duplicatedEmail) {
@@ -24,8 +24,18 @@ export const sendEmail: SendEmail = async (rdbSource, mailer, loginUser, email) 
     }
 
     let registerSessionId: number | null = null;
-    let user: User | null = loginUser;
-    if (!user) {
+    let user: User | null = null;
+    if (loginUserId) {
+      user = await manager.findOne(User, {
+        where: {
+          user_id: userId,
+        },
+      });
+      if (!user) {
+        return new RecordNotFoundError('user', loginUserId, 'user not found');
+      }
+
+    } else {
       registerSessionId = getRandomInt(10000); // TODO UID
       user = manager.create(User, {
         identifier: registerSessionId.toString(),

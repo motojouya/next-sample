@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { DataSource } from 'typeorm';
 
-import { SessionType } from '@/lib/session';
+import { getSession, SessionContaier } from '@/lib/session';
 import { getDataSource } from '@/lib/rdb';
 import { Mailer, getMailer } from '@/lib/mail';
 
 export type NextContext = {
   rdbSource: DataSource;
   mailer: Mailer;
-  session: SessionType;
+  session: SessionContaier;
 };
 
 export interface RequestWithContext extends NextRequest {
@@ -17,22 +17,22 @@ export interface RequestWithContext extends NextRequest {
 }
 
 export type BindContext = (
-  func: (req: NextRequest) => Promise<NextResponse>,
-) => (req: RequestWithContext) => Promise<NextResponse>;
+  func: (req: RequestWithContext) => Promise<NextResponse>,
+) => (req: NextRequest) => Promise<NextResponse>;
 export const bindContext: BindContext = func => async req => {
   const session = await getSession();
   const rdbSource = await getDataSource();
   const mailer = getMailer();
 
-  request.context = {
+  req.context = {
     rdbSource,
     mailer,
     session,
   };
 
-  const res = await func(request);
+  const res = await func(req);
 
-  await session.commit();
+  await session.save();
 
   return res;
 };

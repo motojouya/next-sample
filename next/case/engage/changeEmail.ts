@@ -5,14 +5,14 @@ import { transact, RecordNotFoundError } from '@/lib/rdb';
 
 export type ChangeEmail = (
   rdbSource: DataSource,
-  loginUser: User,
+  loginUserId: number,
   email: string,
 ) => Promise<User | null | RecordNotFoundError>;
-export const changeEmail: ChangeEmail = async (rdbSource, loginUser, email) => {
+export const changeEmail: ChangeEmail = async (rdbSource, loginUserId, email) => {
   return transact(rdbSource, async manager => {
     const userEmail = await manager.findOne(UserEmail, {
       where: {
-        user_id: loginUser.user_id,
+        user_id: loginUserId,
         email: email,
         verified_date: Not(IsNull()),
       },
@@ -20,7 +20,7 @@ export const changeEmail: ChangeEmail = async (rdbSource, loginUser, email) => {
     if (!userEmail) {
       return new RecordNotFoundError(
         'user_email',
-        { user_id: loginUser.user_id, email: email },
+        { user_id: loginUserId, email: email },
         'email is not verified!',
       );
     }
@@ -28,7 +28,7 @@ export const changeEmail: ChangeEmail = async (rdbSource, loginUser, email) => {
     await manager.update(
       User,
       {
-        user_id: loginUser.user_id,
+        user_id: loginUserId,
       },
       {
         email: email,
@@ -37,7 +37,7 @@ export const changeEmail: ChangeEmail = async (rdbSource, loginUser, email) => {
 
     return await manager.findOne(User, {
       where: {
-        user_id: loginUser.user_id,
+        user_id: loginUserId,
       },
     });
   });

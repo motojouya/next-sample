@@ -10,16 +10,16 @@ elif [ $comm = "stop" ]; then
   docker compose stop
 elif [ $comm = "ps" ]; then
   docker compose ps
-elif [ $comm = "psql" ]; then
-  docker compose exec rdb psql
-elif [ $comm = "redis" ]; then
-  docker compose exec memory redis-cli
-elif [ $comm = "next" ]; then
-  docker compose exec next bash
-elif [ $comm = "memory" ]; then
-  docker compose exec memory bash
 elif [ $comm = "rdb" ]; then
   docker compose exec rdb bash
+elif [ $comm = "psql" ]; then
+  docker compose exec rdb psql
+# elif [ $comm = "redis" ]; then
+#   docker compose exec memory redis-cli
+# elif [ $comm = "memory" ]; then
+#   docker compose exec memory bash
+elif [ $comm = "next" ]; then
+  docker compose exec next bash
 else
   docker compose exec next npm run $comm
 fi
