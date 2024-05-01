@@ -1,7 +1,7 @@
 import { EntityManager, DataSource, Raw } from 'typeorm';
 import { User, AnonymousUser } from '@/entity/user';
 import { UserEmail } from '@/entity/userEmail';
-import { transact, RecordAlreadyExistError } from '@/lib/rdb';
+import { transact, RecordAlreadyExistError, RecordNotFoundError } from '@/lib/rdb';
 import { Mailer, MailSendError } from '@/lib/mail';
 import { addHours } from 'date-fns';
 
@@ -28,11 +28,11 @@ export const sendEmail: SendEmail = async (rdbSource, mailer, loginUserId, email
     if (loginUserId) {
       user = await manager.findOne(User, {
         where: {
-          user_id: userId,
+          user_id: loginUserId,
         },
       });
       if (!user) {
-        return new RecordNotFoundError('user', loginUserId, 'user not found');
+        return new RecordNotFoundError('user', { user_id: loginUserId }, 'user not found');
       }
     } else {
       registerSessionId = getRandomInt(10000); // TODO UID

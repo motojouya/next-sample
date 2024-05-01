@@ -2,7 +2,6 @@ import engage from '@/case/engage';
 import { MutationResolvers, ResolversParentTypes } from '@/generated/graphql/server/resolver';
 import { ApolloContext } from '@/lib/apollo';
 import { UserSpecification } from '@/entity/user';
-import { regenerate } from '@/lib/session';
 
 export class AuthenticationError extends Error {
   constructor(

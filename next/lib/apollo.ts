@@ -12,8 +12,8 @@ import { ApolloServer, ContextFunction } from '@apollo/server';
 import { DataSource } from 'typeorm';
 
 import { resolvers } from '@/resolver';
-import type { SessionData } from '@/lib/session';
-import type { RequestWithContext } from '@/lib/server';
+import type { SessionContaier } from '@/lib/session';
+import type { NextContext } from '@/lib/server';
 import type { Mailer } from '@/lib/mail';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,19 +22,18 @@ const __dirname = path.dirname(__filename);
 export interface ApolloContext {
   rdbSource: DataSource;
   mailer: Mailer;
-  session: Partial<SessionData>;
+  session: SessionContaier;
 }
 
 export type GetApolloServer = () => ApolloServer<ApolloContext>;
 export const getApolloServer: GetApolloServer = () => {
-  const schema = loadSchemaSync(path.join(__dirname, '../../../api/schema/*.graphql'), {
+  const schema = loadSchemaSync(path.join(__dirname, '../graphql/schema/*.graphql'), {
     loaders: [new GraphQLFileLoader()],
   });
   const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
 
   return new ApolloServer<ApolloContext>({
     schema: schemaWithResolvers,
-    context: async ({ req }) => req.context,
   });
 };
 
@@ -52,16 +51,19 @@ export const getApolloServer: GetApolloServer = () => {
 // singleton
 let apollo: ApolloServer<ApolloContext> | null = null;
 
-export type Handler = (req: RequestWithContext) => Promise<NextResponse>;
+export type Handler = (context: NextContext) => (req: NextRequest) => Promise<NextResponse>;
 export type GetHandler = () => Handler;
 export const getHandler: GetHandler = () => {
   if (!apollo) {
     apollo = getApolloServer();
   }
 
-  return async request => {
+  return context => async request => {
     const json = await request.json();
-    const res = await apollo.executeOperation({ query: json.query }, { req: request });
+    const res = await (apollo as ApolloServer<ApolloContext>).executeOperation(
+      { query: json.query },
+      { contextValue: context },
+    );
     assert(res.body.kind === 'single');
     return NextResponse.json(res.body.singleResult);
   };

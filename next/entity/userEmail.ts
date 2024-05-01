@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, Relation } from 'typeorm';
+import type { Relation } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '@/entity/user';
 
 @Entity()

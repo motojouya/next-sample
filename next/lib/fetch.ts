@@ -5,7 +5,7 @@ import { GraphQLClient, Variables } from 'graphql-request';
 // TODO export type Fetcher = (query: string | DocumentNode, variables: Variables) => Promise<ExecutionResult>;
 export type Fetcher = (query: string, variables: Variables) => Promise<any>;
 export type GetFetcher = () => Fetcher;
-export const getFetcher = () => {
+export const getFetcher: GetFetcher = () => {
   const client: GraphQLClient = new GraphQLClient(`/api/graphql`);
   return (query, variables) => client.request(query, variables);
 };

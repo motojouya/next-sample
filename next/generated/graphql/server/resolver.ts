@@ -130,7 +130,7 @@ export type SendEmailInput = {
   email: Scalars['String']['input'];
 };
 
-export type SendEmailReturn = AnonymousUser | MailSendError | RecordAlreadyExistError | User;
+export type SendEmailReturn = AnonymousUser | MailSendError | RecordAlreadyExistError | RecordNotFoundError | User;
 
 export type User = {
   __typename?: 'User';
@@ -222,7 +222,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversUnionTypes<RefType extends Record<string, unknown>> = {
   EmailChangeReturn: ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
   RegisterReturn: ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
-  SendEmailReturn: ( DeepPartial<AnonymousUser> ) | ( DeepPartial<MailSendError> ) | ( DeepPartial<RecordAlreadyExistError> ) | ( DeepPartial<User> );
+  SendEmailReturn: ( DeepPartial<AnonymousUser> ) | ( DeepPartial<MailSendError> ) | ( DeepPartial<RecordAlreadyExistError> ) | ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
   VerifyEmailReturn: ( DeepPartial<Email> ) | ( DeepPartial<RecordNotFoundError> );
 };
 
@@ -339,7 +339,7 @@ export type RegisterReturnResolvers<ContextType = any, ParentType extends Resolv
 };
 
 export type SendEmailReturnResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendEmailReturn'] = ResolversParentTypes['SendEmailReturn']> = {
-  __resolveType: TypeResolveFn<'AnonymousUser' | 'MailSendError' | 'RecordAlreadyExistError' | 'User', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AnonymousUser' | 'MailSendError' | 'RecordAlreadyExistError' | 'RecordNotFoundError' | 'User', ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {

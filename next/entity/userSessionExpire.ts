@@ -9,5 +9,5 @@ export class UserSessionExpire {
   created_date!: Date;
 
   @Column()
-  expired_date: Date;
+  expired_date?: Date;
 }

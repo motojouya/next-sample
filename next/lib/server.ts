@@ -12,25 +12,20 @@ export type NextContext = {
   session: SessionContaier;
 };
 
-export interface RequestWithContext extends NextRequest {
-  context?: NextContext;
-}
-
 export type BindContext = (
-  func: (req: RequestWithContext) => Promise<NextResponse>,
+  func: (context: NextContext) => (req: NextRequest) => Promise<NextResponse>,
 ) => (req: NextRequest) => Promise<NextResponse>;
 export const bindContext: BindContext = func => async req => {
   const session = await getSession();
   const rdbSource = await getDataSource();
   const mailer = getMailer();
 
-  req.context = {
+  const context: NextContext = {
     rdbSource,
     mailer,
     session,
   };
-
-  const res = await func(req);
+  const res = await func(context)(req);
 
   await session.save();
 

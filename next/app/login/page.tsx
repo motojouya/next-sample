@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form } from '@/components/ui/form';
-import { useToast, ToastFunc } from '@/components/ui/use-toast';
+import { useToast, toast } from '@/components/ui/use-toast';
 
 import { userIdSchema, userIdDefaultValue, UserIdInputForm } from '@/components/parts/UserIdForm';
 import { passwordSchema, passwordDefaultValue, PasswordInputForm } from '@/components/parts/PasswordForm';
@@ -18,6 +18,7 @@ import { passwordSchema, passwordDefaultValue, PasswordInputForm } from '@/compo
 import { gql } from 'graphql-request';
 import { getFetcher } from '@/lib/fetch';
 
+export type ToastFunc = typeof toast;
 export const dynamic = 'force-dynamic';
 
 const fetcher = getFetcher();
