@@ -18,11 +18,7 @@ export const changeEmail: ChangeEmail = async (rdbSource, loginUserId, email) =>
       },
     });
     if (!userEmail) {
-      return new RecordNotFoundError(
-        'user_email',
-        { user_id: loginUserId, email: email },
-        'email is not verified!',
-      );
+      return new RecordNotFoundError('user_email', { user_id: loginUserId, email: email }, 'email is not verified!');
     }
 
     await manager.update(

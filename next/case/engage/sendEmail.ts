@@ -34,7 +34,6 @@ export const sendEmail: SendEmail = async (rdbSource, mailer, loginUserId, email
       if (!user) {
         return new RecordNotFoundError('user', loginUserId, 'user not found');
       }
-
     } else {
       registerSessionId = getRandomInt(10000); // TODO UID
       user = manager.create(User, {

@@ -9,17 +9,18 @@ export type SessionData = {
 
 type GetIronSession = () => Promise<IronSession<SessionData>>;
 
-const _getIronSession: GetIronSession = () => getIronSession<SessionData>(cookies(), {
-  password: process.env.SESSION_SECRET as string, // TODO 本当はnull checkしたほうがいい
-  cookieName: process.env.SESSION_COOKIE_NAME as string,
-  cookieOptions: {
-    path: '/',
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    maxAge: 60 * 60 * 1000, // TODO 一旦1h
-  }
-});
+const _getIronSession: GetIronSession = () =>
+  getIronSession<SessionData>(cookies(), {
+    password: process.env.SESSION_SECRET as string, // TODO 本当はnull checkしたほうがいい
+    cookieName: process.env.SESSION_COOKIE_NAME as string,
+    cookieOptions: {
+      path: '/',
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 1000, // TODO 一旦1h
+    },
+  });
 
 type InnerRegenerate = (loginUserId: number, session: IronSession<SessionData>) => Promise<IronSession<SessionData>>;
 const _regenerate: InnerRegenerate = async (loginUserId, session) => {
@@ -36,14 +37,13 @@ export type Destory = () => void;
 export type Regenerate = () => Promise<void>;
 export type GetLoginUserId = () => number;
 export type SessionContaier = {
-  save: Save,
-  destory: Destory,
-  regenerate: Regenerate,
-  getLoginUserId: GetLoginUserId,
+  save: Save;
+  destory: Destory;
+  regenerate: Regenerate;
+  getLoginUserId: GetLoginUserId;
 };
-export type GetSession = () => Promise<SessionContaier>
+export type GetSession = () => Promise<SessionContaier>;
 export const getSession: GetSession = async () => {
-
   let session = await _getIronSession();
   loginUserId = session.loginUserId;
 
@@ -74,7 +74,7 @@ export const getSession: GetSession = async () => {
 
   const save: Save = () => session.save();
   const destroy: Destroy = () => session.destroy();
-  const regenerate: Regenerate = async (loginUserId) => {
+  const regenerate: Regenerate = async loginUserId => {
     session = await _regenerate(loginUserId, session);
   };
   const getLoginUserId: GetLoginUserId = () => session.loginUserId;
