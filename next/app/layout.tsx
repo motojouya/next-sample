@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 
 type GetUser = () => Promise<LoginUser | null>;
 const getUser: GetUser = async () => {
-
   const session = await getSession();
   const loginUserId = session.getLoginUserId();
   if (!loginUserId) {
