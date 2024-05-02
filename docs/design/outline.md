@@ -48,7 +48,7 @@ toBシステムにおいて、消費者がなんらかの注文をし、それ�
   /?search=<word>  
 - 店舗  
   - 商品選択フォーム  
-  /<store-name>  
+  /stores/<store-name>  
 - 購入履歴一覧  
   /order_histories  
 - 購入履歴詳細  
@@ -56,29 +56,32 @@ toBシステムにおいて、消費者がなんらかの注文をし、それ�
 
 ### 店舗管理者
 - 店舗一覧  
-  /stores  
+  /manage/stores  
 - 店舗管理トップ  
-  /stores/<store-name>  
+  /manage/stores/<store-name>  
 - メニュー一覧  
-  /stores/<store-name>/menus  
+  /manage/stores/<store-name>/menus  
 - メニュー編集  
-  /stores/<store-name>/menus/<menu-name>  
+  /manage/stores/<store-name>/menus/<menu-name>  
 - メンバー一覧  
-  /stores/<store-name>/members  
+  /manage/stores/<store-name>/members  
 - 注文履歴一覧  
-  /stores/<store-name>/order_histories  
+  /manage/stores/<store-name>/order_histories  
 - 注文履歴詳細  
-  /stores/<store-name>/order_histories/<order-id>  
+  /manage/stores/<store-name>/order_histories/<order-id>  
 - メンバー承諾画面  
-  /stores/<store-name>/members/verify  
+  /manage/stores/<store-name>/members/verify  
 
 ### 出店者（店舗管理者の権限を含む）
-- 店舗編集  
-  /stores/<store-name>/edit  
+- 店舗作成  
+  /manage/stores/new  
   - 作成  
+- 店舗編集  
+  /manage/stores/<store-name>/edit  
+  - 編集  
   - 削除  
 - メンバー編集  
-  /stores/<store-name>/members/<user-identifier>  
+  /manage/stores/<store-name>/members/<user-identifier>  
   - 追加  
   - 削除  
   - 権限変更  
@@ -150,6 +153,7 @@ toBシステムにおいて、消費者がなんらかの注文をし、それ�
   - updated_date
 - store
   - store_id
+  - store_url
   - name
   - created_date
   - updated_date
