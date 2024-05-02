@@ -61,7 +61,7 @@ export const getHandler: GetHandler = () => {
   return context => async request => {
     const json = await request.json();
     const res = await (apollo as ApolloServer<ApolloContext>).executeOperation(
-      { query: json.query },
+      json,
       { contextValue: context },
     );
     assert(res.body.kind === 'single');

@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: [
+      'typeorm',
+      'react-native-sqlite-storage',
+      '@sap/hana-client/extension/Stream',
+      'mysql',
+    ],
+  },
+};
 
 export default nextConfig;
 // .eslintrc.json -> jsonでコメントかけないのでメモ。必要なら追記する

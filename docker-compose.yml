@@ -28,7 +28,7 @@ services:
       PG_DATABASE: bsample
       PG_USER: bsample
       PG_PASSWORD: bsample
-      SESSION_SECRET: secret
+      SESSION_SECRET: secret12secret34secret56secret78
       SESSION_COOKIE_NAME: session-id
       # REDIS_HOST: memory
       # REDIS_PORT: 6379

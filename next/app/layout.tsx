@@ -47,7 +47,7 @@ const getUser: GetUser = async () => {
   return {
     id: userEntity.identifier,
     name: userEntity.name as string,
-    email: userEntity.name as string,
+    email: userEntity.email as string,
   };
 };
 
