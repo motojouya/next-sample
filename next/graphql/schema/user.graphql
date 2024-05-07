@@ -23,11 +23,16 @@ type User {
   id: ID!
   name: String!
   email_information: Email!
+  plan: Plan!
 }
 
 type Email {
   email: String!
   verified: Boolean!
+}
+
+type Plan {
+  name: String!
 }
 
 type AnonymousUser {

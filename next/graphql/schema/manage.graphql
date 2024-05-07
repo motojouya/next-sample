@@ -1,0 +1,25 @@
+input CreateStoreInput {
+  url: String!
+  name: String!
+}
+
+union CreateStoreReturn = Store
+
+input EditStoreInput {
+  url: String!
+  name: String!
+}
+
+union EditStoreReturn = Store
+
+input DeleteStoreInput {
+  url: String!
+}
+
+union DeleteStoreReturn = Store
+
+type Mutation {
+  createStore(input: CreateStoreInput!): CreateStoreReturn
+  editStore(input: EditStoreInput!): EditStoreReturn
+  deleteStore(input: DeleteStoreInput!): DeleteStoreReturn
+}

@@ -1,0 +1,22 @@
+type Store {
+  store_id: ID!
+  store_url: String!
+  name: String!
+  staffs: User[]!
+  owners: User[]!
+}
+
+input StoreInput {
+  store_id: ID!
+}
+
+input StoreSearchInput {
+  name: String!
+  joining: Boolean
+  ownering: Boolean
+}
+
+type Query {
+  store(input: StoreInput!): Store
+  stores(input: StoreSearchInput!): Store[]
+}

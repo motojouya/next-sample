@@ -40,14 +40,24 @@ input PasswordInput {
   password: String!
 }
 
+input LogoutInput {
+  id: ID!
+}
+
+input PlanInput {
+  plan: String!
+}
+
 type Mutation {
   sendEmail(input: SendEmailInput!): SendEmailReturn
   verifyEmail(input: VerifyEmailInput!): VerifyEmailReturn
   register(input: RegisterInput!): RegisterReturn
   login(input: LoginInput!): User
+  logout(input: LogoutInput!): User
   changeUserInformation(input: UserInput!): User
   changeEmail(input: EmailInput!): EmailChangeReturn
   changePassword(input: PasswordInput!): User
+  changePlan(input: PlanInput!): User
 }
 
 type Query {

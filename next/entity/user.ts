@@ -1,6 +1,7 @@
 import type { Relation } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
 import { UserEmail } from '@/entity/userEmail';
+import { UserPlan } from '@/entity/userPlan';
 import { UserPassword } from '@/entity/userPassword';
 
 export type UserSpecification =
@@ -59,6 +60,9 @@ export class User {
 
   @OneToMany(type => UserEmail, userEmail => userEmail.user)
   userEmails?: Relation<UserEmail[]>;
+
+  @OneToOne(type => UserPlan, userPlan => userPlan.user)
+  plan?: Relation<UserPlan>;
 
   @OneToOne(type => UserPassword, userPassword => userPassword.user)
   password?: Relation<UserPassword>;
