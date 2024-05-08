@@ -1,7 +1,6 @@
 import type { Relation } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
-import { UserEmail } from '@/entity/userEmail';
-import { UserPassword } from '@/entity/userPassword';
+import { StoreUser } from '@/entity/storeUser';
 
 @Entity()
 export class Store {
@@ -24,4 +23,11 @@ export class Store {
 
   @Column({ default: () => 'now()' })
   updated_date!: Date;
+
+  @OneToMany(type => StoreUser, storeUser => storeUser.store)
+  @JoinColumn({
+    name: 'store_id',
+    referencedColumnName: 'store_id',
+  })
+  storeUsers?: Relation<StoreUser[]>;
 }

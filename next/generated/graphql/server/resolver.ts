@@ -30,6 +30,26 @@ export type AuthenticationError = {
   userKey: Scalars['String']['output'];
 };
 
+export type CreateStoreInput = {
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type CreateStoreReturn = Store;
+
+export type DeleteStoreInput = {
+  url: Scalars['String']['input'];
+};
+
+export type DeleteStoreReturn = Store;
+
+export type EditStoreInput = {
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type EditStoreReturn = Store;
+
 export type Email = {
   __typename?: 'Email';
   email: Scalars['String']['output'];
@@ -56,8 +76,13 @@ export type Mutation = {
   __typename?: 'Mutation';
   changeEmail?: Maybe<EmailChangeReturn>;
   changePassword?: Maybe<User>;
+  changePlan?: Maybe<User>;
   changeUserInformation?: Maybe<User>;
+  createStore?: Maybe<CreateStoreReturn>;
+  deleteStore?: Maybe<DeleteStoreReturn>;
+  editStore?: Maybe<EditStoreReturn>;
   login?: Maybe<User>;
+  logout: Scalars['Boolean']['output'];
   register?: Maybe<RegisterReturn>;
   sendEmail?: Maybe<SendEmailReturn>;
   verifyEmail?: Maybe<VerifyEmailReturn>;
@@ -74,8 +99,28 @@ export type MutationChangePasswordArgs = {
 };
 
 
+export type MutationChangePlanArgs = {
+  input: PlanInput;
+};
+
+
 export type MutationChangeUserInformationArgs = {
   input: UserInput;
+};
+
+
+export type MutationCreateStoreArgs = {
+  input: CreateStoreInput;
+};
+
+
+export type MutationDeleteStoreArgs = {
+  input: DeleteStoreInput;
+};
+
+
+export type MutationEditStoreArgs = {
+  input: EditStoreInput;
 };
 
 
@@ -102,9 +147,30 @@ export type PasswordInput = {
   password: Scalars['String']['input'];
 };
 
+export type Plan = {
+  __typename?: 'Plan';
+  name: Scalars['String']['output'];
+};
+
+export type PlanInput = {
+  plan: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   loginUser?: Maybe<User>;
+  store?: Maybe<Store>;
+  stores: Array<Store>;
+};
+
+
+export type QueryStoreArgs = {
+  input: StoreInput;
+};
+
+
+export type QueryStoresArgs = {
+  input: StoreSearchInput;
 };
 
 export type RecordAlreadyExistError = {
@@ -126,17 +192,42 @@ export type RegisterInput = {
 
 export type RegisterReturn = RecordNotFoundError | User;
 
+export type ReturnResult = {
+  __typename?: 'ReturnResult';
+  success: Scalars['Boolean']['output'];
+};
+
 export type SendEmailInput = {
   email: Scalars['String']['input'];
 };
 
 export type SendEmailReturn = AnonymousUser | MailSendError | RecordAlreadyExistError | RecordNotFoundError | User;
 
+export type Store = {
+  __typename?: 'Store';
+  name: Scalars['String']['output'];
+  owners: Array<User>;
+  staffs: Array<User>;
+  store_id: Scalars['ID']['output'];
+  store_url: Scalars['String']['output'];
+};
+
+export type StoreInput = {
+  store_url: Scalars['String']['input'];
+};
+
+export type StoreSearchInput = {
+  joining?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  ownering?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type User = {
   __typename?: 'User';
   email_information: Email;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  plan: Plan;
 };
 
 export type UserInput = {
@@ -220,6 +311,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<RefType extends Record<string, unknown>> = {
+  CreateStoreReturn: ( DeepPartial<Store> );
+  DeleteStoreReturn: ( DeepPartial<Store> );
+  EditStoreReturn: ( DeepPartial<Store> );
   EmailChangeReturn: ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
   RegisterReturn: ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
   SendEmailReturn: ( DeepPartial<AnonymousUser> ) | ( DeepPartial<MailSendError> ) | ( DeepPartial<RecordAlreadyExistError> ) | ( DeepPartial<RecordNotFoundError> ) | ( DeepPartial<User> );
@@ -232,6 +326,12 @@ export type ResolversTypes = {
   AnonymousUser: ResolverTypeWrapper<DeepPartial<AnonymousUser>>;
   AuthenticationError: ResolverTypeWrapper<DeepPartial<AuthenticationError>>;
   Boolean: ResolverTypeWrapper<DeepPartial<Scalars['Boolean']['output']>>;
+  CreateStoreInput: ResolverTypeWrapper<DeepPartial<CreateStoreInput>>;
+  CreateStoreReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CreateStoreReturn']>>;
+  DeleteStoreInput: ResolverTypeWrapper<DeepPartial<DeleteStoreInput>>;
+  DeleteStoreReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['DeleteStoreReturn']>>;
+  EditStoreInput: ResolverTypeWrapper<DeepPartial<EditStoreInput>>;
+  EditStoreReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['EditStoreReturn']>>;
   Email: ResolverTypeWrapper<DeepPartial<Email>>;
   EmailChangeReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['EmailChangeReturn']>>;
   EmailInput: ResolverTypeWrapper<DeepPartial<EmailInput>>;
@@ -241,13 +341,19 @@ export type ResolversTypes = {
   MailSendError: ResolverTypeWrapper<DeepPartial<MailSendError>>;
   Mutation: ResolverTypeWrapper<{}>;
   PasswordInput: ResolverTypeWrapper<DeepPartial<PasswordInput>>;
+  Plan: ResolverTypeWrapper<DeepPartial<Plan>>;
+  PlanInput: ResolverTypeWrapper<DeepPartial<PlanInput>>;
   Query: ResolverTypeWrapper<{}>;
   RecordAlreadyExistError: ResolverTypeWrapper<DeepPartial<RecordAlreadyExistError>>;
   RecordNotFoundError: ResolverTypeWrapper<DeepPartial<RecordNotFoundError>>;
   RegisterInput: ResolverTypeWrapper<DeepPartial<RegisterInput>>;
   RegisterReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['RegisterReturn']>>;
+  ReturnResult: ResolverTypeWrapper<DeepPartial<ReturnResult>>;
   SendEmailInput: ResolverTypeWrapper<DeepPartial<SendEmailInput>>;
   SendEmailReturn: DeepPartial<ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SendEmailReturn']>>;
+  Store: ResolverTypeWrapper<DeepPartial<Store>>;
+  StoreInput: ResolverTypeWrapper<DeepPartial<StoreInput>>;
+  StoreSearchInput: ResolverTypeWrapper<DeepPartial<StoreSearchInput>>;
   String: ResolverTypeWrapper<DeepPartial<Scalars['String']['output']>>;
   User: ResolverTypeWrapper<DeepPartial<User>>;
   UserInput: ResolverTypeWrapper<DeepPartial<UserInput>>;
@@ -260,6 +366,12 @@ export type ResolversParentTypes = {
   AnonymousUser: DeepPartial<AnonymousUser>;
   AuthenticationError: DeepPartial<AuthenticationError>;
   Boolean: DeepPartial<Scalars['Boolean']['output']>;
+  CreateStoreInput: DeepPartial<CreateStoreInput>;
+  CreateStoreReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['CreateStoreReturn']>;
+  DeleteStoreInput: DeepPartial<DeleteStoreInput>;
+  DeleteStoreReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['DeleteStoreReturn']>;
+  EditStoreInput: DeepPartial<EditStoreInput>;
+  EditStoreReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['EditStoreReturn']>;
   Email: DeepPartial<Email>;
   EmailChangeReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['EmailChangeReturn']>;
   EmailInput: DeepPartial<EmailInput>;
@@ -269,13 +381,19 @@ export type ResolversParentTypes = {
   MailSendError: DeepPartial<MailSendError>;
   Mutation: {};
   PasswordInput: DeepPartial<PasswordInput>;
+  Plan: DeepPartial<Plan>;
+  PlanInput: DeepPartial<PlanInput>;
   Query: {};
   RecordAlreadyExistError: DeepPartial<RecordAlreadyExistError>;
   RecordNotFoundError: DeepPartial<RecordNotFoundError>;
   RegisterInput: DeepPartial<RegisterInput>;
   RegisterReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['RegisterReturn']>;
+  ReturnResult: DeepPartial<ReturnResult>;
   SendEmailInput: DeepPartial<SendEmailInput>;
   SendEmailReturn: DeepPartial<ResolversUnionTypes<ResolversParentTypes>['SendEmailReturn']>;
+  Store: DeepPartial<Store>;
+  StoreInput: DeepPartial<StoreInput>;
+  StoreSearchInput: DeepPartial<StoreSearchInput>;
   String: DeepPartial<Scalars['String']['output']>;
   User: DeepPartial<User>;
   UserInput: DeepPartial<UserInput>;
@@ -293,6 +411,18 @@ export type AuthenticationErrorResolvers<ContextType = any, ParentType extends R
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userKey?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateStoreReturnResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateStoreReturn'] = ResolversParentTypes['CreateStoreReturn']> = {
+  __resolveType: TypeResolveFn<'Store', ParentType, ContextType>;
+};
+
+export type DeleteStoreReturnResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteStoreReturn'] = ResolversParentTypes['DeleteStoreReturn']> = {
+  __resolveType: TypeResolveFn<'Store', ParentType, ContextType>;
+};
+
+export type EditStoreReturnResolvers<ContextType = any, ParentType extends ResolversParentTypes['EditStoreReturn'] = ResolversParentTypes['EditStoreReturn']> = {
+  __resolveType: TypeResolveFn<'Store', ParentType, ContextType>;
 };
 
 export type EmailResolvers<ContextType = any, ParentType extends ResolversParentTypes['Email'] = ResolversParentTypes['Email']> = {
@@ -313,15 +443,27 @@ export type MailSendErrorResolvers<ContextType = any, ParentType extends Resolve
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   changeEmail?: Resolver<Maybe<ResolversTypes['EmailChangeReturn']>, ParentType, ContextType, RequireFields<MutationChangeEmailArgs, 'input'>>;
   changePassword?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'input'>>;
+  changePlan?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationChangePlanArgs, 'input'>>;
   changeUserInformation?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationChangeUserInformationArgs, 'input'>>;
+  createStore?: Resolver<Maybe<ResolversTypes['CreateStoreReturn']>, ParentType, ContextType, RequireFields<MutationCreateStoreArgs, 'input'>>;
+  deleteStore?: Resolver<Maybe<ResolversTypes['DeleteStoreReturn']>, ParentType, ContextType, RequireFields<MutationDeleteStoreArgs, 'input'>>;
+  editStore?: Resolver<Maybe<ResolversTypes['EditStoreReturn']>, ParentType, ContextType, RequireFields<MutationEditStoreArgs, 'input'>>;
   login?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   register?: Resolver<Maybe<ResolversTypes['RegisterReturn']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
   sendEmail?: Resolver<Maybe<ResolversTypes['SendEmailReturn']>, ParentType, ContextType, RequireFields<MutationSendEmailArgs, 'input'>>;
   verifyEmail?: Resolver<Maybe<ResolversTypes['VerifyEmailReturn']>, ParentType, ContextType, RequireFields<MutationVerifyEmailArgs, 'input'>>;
 };
 
+export type PlanResolvers<ContextType = any, ParentType extends ResolversParentTypes['Plan'] = ResolversParentTypes['Plan']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   loginUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  store?: Resolver<Maybe<ResolversTypes['Store']>, ParentType, ContextType, RequireFields<QueryStoreArgs, 'input'>>;
+  stores?: Resolver<Array<ResolversTypes['Store']>, ParentType, ContextType, RequireFields<QueryStoresArgs, 'input'>>;
 };
 
 export type RecordAlreadyExistErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['RecordAlreadyExistError'] = ResolversParentTypes['RecordAlreadyExistError']> = {
@@ -338,14 +480,29 @@ export type RegisterReturnResolvers<ContextType = any, ParentType extends Resolv
   __resolveType: TypeResolveFn<'RecordNotFoundError' | 'User', ParentType, ContextType>;
 };
 
+export type ReturnResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReturnResult'] = ResolversParentTypes['ReturnResult']> = {
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type SendEmailReturnResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendEmailReturn'] = ResolversParentTypes['SendEmailReturn']> = {
   __resolveType: TypeResolveFn<'AnonymousUser' | 'MailSendError' | 'RecordAlreadyExistError' | 'RecordNotFoundError' | 'User', ParentType, ContextType>;
+};
+
+export type StoreResolvers<ContextType = any, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owners?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  staffs?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  store_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  store_url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   email_information?: Resolver<ResolversTypes['Email'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  plan?: Resolver<ResolversTypes['Plan'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -356,15 +513,21 @@ export type VerifyEmailReturnResolvers<ContextType = any, ParentType extends Res
 export type Resolvers<ContextType = any> = {
   AnonymousUser?: AnonymousUserResolvers<ContextType>;
   AuthenticationError?: AuthenticationErrorResolvers<ContextType>;
+  CreateStoreReturn?: CreateStoreReturnResolvers<ContextType>;
+  DeleteStoreReturn?: DeleteStoreReturnResolvers<ContextType>;
+  EditStoreReturn?: EditStoreReturnResolvers<ContextType>;
   Email?: EmailResolvers<ContextType>;
   EmailChangeReturn?: EmailChangeReturnResolvers<ContextType>;
   MailSendError?: MailSendErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Plan?: PlanResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RecordAlreadyExistError?: RecordAlreadyExistErrorResolvers<ContextType>;
   RecordNotFoundError?: RecordNotFoundErrorResolvers<ContextType>;
   RegisterReturn?: RegisterReturnResolvers<ContextType>;
+  ReturnResult?: ReturnResultResolvers<ContextType>;
   SendEmailReturn?: SendEmailReturnResolvers<ContextType>;
+  Store?: StoreResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   VerifyEmailReturn?: VerifyEmailReturnResolvers<ContextType>;
 };

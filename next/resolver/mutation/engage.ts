@@ -72,6 +72,17 @@ const register: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation'
   return await engage.register(rdbSource, register_session_id, name, email, password);
 };
 
+const logout: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>['logout'] = async (
+  parent,
+  args,
+  contextValue,
+  info,
+) => {
+  await contextValue.session.regenerate(null);
+
+  return true
+};
+
 const login: MutationResolvers<ApolloContext, ResolversParentTypes['Mutation']>['login'] = async (
   parent,
   args,

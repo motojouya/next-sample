@@ -40,12 +40,12 @@ input PasswordInput {
   password: String!
 }
 
-input LogoutInput {
-  id: ID!
-}
-
 input PlanInput {
   plan: String!
+}
+
+type ReturnResult {
+  success: Boolean!
 }
 
 type Mutation {
@@ -53,7 +53,7 @@ type Mutation {
   verifyEmail(input: VerifyEmailInput!): VerifyEmailReturn
   register(input: RegisterInput!): RegisterReturn
   login(input: LoginInput!): User
-  logout(input: LogoutInput!): User
+  logout: Boolean!
   changeUserInformation(input: UserInput!): User
   changeEmail(input: EmailInput!): EmailChangeReturn
   changePassword(input: PasswordInput!): User

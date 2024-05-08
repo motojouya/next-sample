@@ -21,6 +21,7 @@
 - 設定
   - path `/setting`
   - links
+    - `/logout`
     - `/manage/stores`
 - 管理店舗一覧
   - path `/manage/stores`

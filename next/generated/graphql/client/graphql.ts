@@ -26,6 +26,26 @@ export type AuthenticationError = {
   userKey: Scalars['String']['output'];
 };
 
+export type CreateStoreInput = {
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type CreateStoreReturn = Store;
+
+export type DeleteStoreInput = {
+  url: Scalars['String']['input'];
+};
+
+export type DeleteStoreReturn = Store;
+
+export type EditStoreInput = {
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type EditStoreReturn = Store;
+
 export type Email = {
   email: Scalars['String']['output'];
   verified: Scalars['Boolean']['output'];
@@ -49,8 +69,13 @@ export type MailSendError = {
 export type Mutation = {
   changeEmail: Maybe<EmailChangeReturn>;
   changePassword: Maybe<User>;
+  changePlan: Maybe<User>;
   changeUserInformation: Maybe<User>;
+  createStore: Maybe<CreateStoreReturn>;
+  deleteStore: Maybe<DeleteStoreReturn>;
+  editStore: Maybe<EditStoreReturn>;
   login: Maybe<User>;
+  logout: Scalars['Boolean']['output'];
   register: Maybe<RegisterReturn>;
   sendEmail: Maybe<SendEmailReturn>;
   verifyEmail: Maybe<VerifyEmailReturn>;
@@ -67,8 +92,28 @@ export type MutationChangePasswordArgs = {
 };
 
 
+export type MutationChangePlanArgs = {
+  input: PlanInput;
+};
+
+
 export type MutationChangeUserInformationArgs = {
   input: UserInput;
+};
+
+
+export type MutationCreateStoreArgs = {
+  input: CreateStoreInput;
+};
+
+
+export type MutationDeleteStoreArgs = {
+  input: DeleteStoreInput;
+};
+
+
+export type MutationEditStoreArgs = {
+  input: EditStoreInput;
 };
 
 
@@ -95,8 +140,28 @@ export type PasswordInput = {
   password: Scalars['String']['input'];
 };
 
+export type Plan = {
+  name: Scalars['String']['output'];
+};
+
+export type PlanInput = {
+  plan: Scalars['String']['input'];
+};
+
 export type Query = {
   loginUser: Maybe<User>;
+  store: Maybe<Store>;
+  stores: Array<Store>;
+};
+
+
+export type QueryStoreArgs = {
+  input: StoreInput;
+};
+
+
+export type QueryStoresArgs = {
+  input: StoreSearchInput;
 };
 
 export type RecordAlreadyExistError = {
@@ -116,16 +181,39 @@ export type RegisterInput = {
 
 export type RegisterReturn = RecordNotFoundError | User;
 
+export type ReturnResult = {
+  success: Scalars['Boolean']['output'];
+};
+
 export type SendEmailInput = {
   email: Scalars['String']['input'];
 };
 
 export type SendEmailReturn = AnonymousUser | MailSendError | RecordAlreadyExistError | RecordNotFoundError | User;
 
+export type Store = {
+  name: Scalars['String']['output'];
+  owners: Array<User>;
+  staffs: Array<User>;
+  store_id: Scalars['ID']['output'];
+  store_url: Scalars['String']['output'];
+};
+
+export type StoreInput = {
+  store_url: Scalars['String']['input'];
+};
+
+export type StoreSearchInput = {
+  joining?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  ownering?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type User = {
   email_information: Email;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  plan: Plan;
 };
 
 export type UserInput = {

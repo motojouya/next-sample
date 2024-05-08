@@ -3,6 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typ
 import { UserEmail } from '@/entity/userEmail';
 import { UserPlan } from '@/entity/userPlan';
 import { UserPassword } from '@/entity/userPassword';
+import { StoreUser } from '@/entity/storeUser';
 
 export type UserSpecification =
   | {
@@ -62,7 +63,18 @@ export class User {
   userEmails?: Relation<UserEmail[]>;
 
   @OneToOne(type => UserPlan, userPlan => userPlan.user)
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'user_id',
+  })
   plan?: Relation<UserPlan>;
+
+  @OneToMany(type => StoreUser, storeUser => storeUser.user)
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'user_id',
+  })
+  storeUsers?: Relation<StoreUser[]>;
 
   @OneToOne(type => UserPassword, userPassword => userPassword.user)
   password?: Relation<UserPassword>;

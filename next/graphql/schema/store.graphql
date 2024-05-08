@@ -2,12 +2,12 @@ type Store {
   store_id: ID!
   store_url: String!
   name: String!
-  staffs: User[]!
-  owners: User[]!
+  staffs: [User!]!
+  owners: [User!]!
 }
 
 input StoreInput {
-  store_id: ID!
+  store_url: String!
 }
 
 input StoreSearchInput {
@@ -18,5 +18,5 @@ input StoreSearchInput {
 
 type Query {
   store(input: StoreInput!): Store
-  stores(input: StoreSearchInput!): Store[]
+  stores(input: StoreSearchInput!): [Store!]!
 }
