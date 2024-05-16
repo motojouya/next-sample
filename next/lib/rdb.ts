@@ -1,5 +1,45 @@
-import { DataSource, EntityManager } from 'typeorm';
-import { list } from '@/entity';
+import { Pool } from 'pg';
+import { Kysely, PostgresDialect, Transaction } from 'kysely';
+import { Database } from '@/rdb/type';
+
+let rdb?: Kysely = undefined;
+
+export type GetRdb = () => Kysely;
+export const getRdb: GetRdb = () => {
+  if (!rdb) {
+    rdb = new Kysely<Database>({
+      dialect: new PostgresDialect({
+        pool: new Pool({
+          database: process.env.PG_DATABASE,
+          host: process.env.PG_HOST,
+          user: process.env.PG_USER,
+          password: process.env.PG_PASSWORD,
+          port: parseInt(process.env.PG_PORT as string),
+          max: 1,
+        })
+      })
+    });
+  }
+  return rdb;
+};
+
+export async function transact<T>(rdb: Kysely, callback: (trx: Transaction) => Promise<T>): Promise<T> {
+  try {
+    return db.transaction().execute(trx => {
+      const result = callback(trx);
+
+      if (result instanceof Error) {
+        throw result;
+      }
+
+      return result;
+    });
+
+  // kyselyがrollbackはerror throwを想定しているため、callback内で投げて、再度catchする
+  } catch (e) {
+    return e;
+  }
+}
 
 export class RecordAlreadyExistError extends Error {
   constructor(
@@ -20,43 +60,3 @@ export class RecordNotFoundError extends Error {
     super();
   }
 }
-
-export async function transact<T>(source: DataSource, callback: (manager: EntityManager) => Promise<T>): Promise<T> {
-  const queryRunner = source.createQueryRunner();
-  await queryRunner.connect();
-
-  await queryRunner.startTransaction();
-
-  const result = await callback(queryRunner.manager);
-
-  if (result instanceof Error) {
-    await queryRunner.rollbackTransaction();
-  } else {
-    await queryRunner.commitTransaction();
-  }
-  await queryRunner.release();
-
-  return result;
-}
-
-let ds: DataSource | null = null;
-export const getDataSource = async () => {
-  if (ds) {
-    return ds;
-  }
-  ds = new DataSource({
-    type: 'postgres',
-    host: process.env.PG_HOST,
-    port: parseInt(process.env.PG_PORT as string), // TODO 本当はnull checkしたほうがいい
-    username: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
-    synchronize: true,
-    logging: false,
-    entities: list,
-    migrations: [],
-    subscribers: [],
-  });
-  await ds.initialize();
-  return ds;
-};
