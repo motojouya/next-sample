@@ -45,7 +45,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .createTable('user_session_expire')
     .addColumn('user_id', 'integer', (col) => col.primaryKey())
     .addColumn('created_date', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+      col.primaryKey().defaultTo(sql`now()`).notNull()
     )
     .addColumn('expired_date', 'timestamp')
     .execute();
